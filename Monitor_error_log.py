@@ -43,12 +43,12 @@ with open(log_file) as f:
         print('Critical, New and Old Errors in Logs')
         create_error(append=True)
         sys.exit(2)
+    elif old_errors:
+        print('Critical, Old Errors in Logs')
+        sys.exit(2)
     elif int(pos) < os.path.getsize(log_file):
         print('Critical, New Errors in Logs')
         create_error()
-        sys.exit(2)
-    elif old_errors:
-        print('Critical, Old Errors in Logs')
         sys.exit(2)
     elif int(pos) > os.path.getsize(log_file):
         f.seek(0)
@@ -60,14 +60,14 @@ with open(log_file) as f:
                 p.write(str(f.tell()))
             create_error(append=True)
             sys.exit(2)
+        elif old_errors:
+            print('Critical, Old Errors in Logs')
+            sys.exit(2)
         elif f.tell() > 0:
             print('Critical, New Errors in Logs')
             with open('/root/bin/pos', 'w') as p:
                 p.write(str(f.tell()))
             create_error()
-            sys.exit(2)
-        elif old_errors:
-            print('Critical, Old Errors in Logs')
             sys.exit(2)
         else:
             with open('/root/bin/pos', 'w') as p:
